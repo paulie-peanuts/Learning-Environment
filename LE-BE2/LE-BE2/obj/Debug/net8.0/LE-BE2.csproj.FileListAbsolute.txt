@@ -28,3 +28,4 @@
 /Users/paulfilipkowski/Learning-Environment/LE-BE2/LE-BE2/obj/Debug/net8.0/LE-BE2.pdb
 /Users/paulfilipkowski/Learning-Environment/LE-BE2/LE-BE2/obj/Debug/net8.0/LE-BE2.genruntimeconfig.cache
 /Users/paulfilipkowski/Learning-Environment/LE-BE2/LE-BE2/obj/Debug/net8.0/ref/LE-BE2.dll
+/Users/paulfilipkowski/Learning-Environment/LE-BE2/LE-BE2/obj/Debug/net8.0/LE-BE2.sourcelink.json

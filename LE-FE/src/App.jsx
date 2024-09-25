@@ -4,7 +4,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import ItemList from './Components/ItemList'
-
+import SynonymReplacer from './Components/SynonymReplacer';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -12,7 +12,8 @@ function App() {
   return (
     <>
       <div>
-        <ItemList></ItemList>
+        <ItemList />
+        <SynonymReplacer />
       </div>
       <div>
         <a href="https://vitejs.dev" target="_blank">
