@@ -5,6 +5,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import ItemList from './Components/ItemList'
 import SynonymReplacer from './Components/SynonymReplacer';
+import QuizApp from './Components/QuizApp'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -14,6 +15,7 @@ function App() {
       <div>
         <ItemList />
         <SynonymReplacer />
+        <QuizApp />
       </div>
       <div>
         <a href="https://vitejs.dev" target="_blank">
