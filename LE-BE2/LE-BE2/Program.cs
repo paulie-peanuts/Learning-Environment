@@ -1,5 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using SynonymReplacer.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = "host=localhost;user=greenroutine;password=greenroutine;database=LearningEnvironment";
+builder.Services.AddDbContext<QuizDbContext>(options => options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 36))));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
