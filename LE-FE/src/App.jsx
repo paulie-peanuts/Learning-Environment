@@ -6,12 +6,24 @@ import './App.css'
 import ItemList from './Components/ItemList'
 import SynonymReplacer from './Components/SynonymReplacer';
 import QuizApp from './Components/QuizApp'
+import Login from './Components/Login';  // Import your Login component
+import ProtectedDataComponent from './Components/ProtectedDataComponent'; // Import the ProtectedDataComponent
+
+
 
 function App() {
   const [count, setCount] = useState(0)
-
+  const isAuthenticated = !!localStorage.getItem('token');
   return (
     <>
+      <div>
+        <h1>My App</h1>
+        {!isAuthenticated ? (
+          <Login /> // Show login if not authenticated
+        ) : (
+          <ProtectedDataComponent /> // Show protected data if authenticated
+        )}
+      </div>
       <div>
         <ItemList />
         <SynonymReplacer />
