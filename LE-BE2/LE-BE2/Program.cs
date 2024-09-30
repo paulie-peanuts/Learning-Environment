@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SynonymReplacer.Models;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,10 @@ var connectionString = "host=localhost;user=greenroutine;password=greenroutine;d
 builder.Services.AddDbContext<QuizDbContext>(options => options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 36))));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+        .AddEntityFrameworkStores<QuizDbContext>()
+        .AddDefaultTokenProviders();
 
 builder.Services.AddCors(options =>
 {
@@ -35,7 +40,8 @@ app.UseCors("AllowReactApp");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseRouting();
 
 app.UseAuthorization();

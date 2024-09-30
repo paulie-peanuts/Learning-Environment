@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace SynonymReplacer.Models
 {
@@ -11,7 +13,7 @@ namespace SynonymReplacer.Models
         public string Options { get; set; }
     }
 
-    public class QuizDbContext : DbContext
+    public class QuizDbContext : IdentityDbContext<IdentityUser>
     {
         public QuizDbContext(DbContextOptions<QuizDbContext> options) : base(options) { }
 
