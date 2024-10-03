@@ -7,6 +7,7 @@ import ItemList from './Components/ItemList'
 import SynonymReplacer from './Components/SynonymReplacer';
 import QuizApp from './Components/QuizApp'
 import Login from './Components/Login';  // Import your Login component
+import SignUp from './Components/SignUp';
 import ProtectedDataComponent from './Components/ProtectedDataComponent'; // Import the ProtectedDataComponent
 
 
@@ -28,6 +29,7 @@ function App() {
         <ItemList />
         <SynonymReplacer />
         <QuizApp />
+        <SignUp />
       </div>
       <div>
         <a href="https://vitejs.dev" target="_blank">

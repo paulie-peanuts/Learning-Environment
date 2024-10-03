@@ -71,12 +71,13 @@ namespace SynonymReplacer.Controllers
 
             return BadRequest(result.Errors);
         }*/
-        [HttpPost("api/auth/register")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
+            Console.WriteLine("here");
             var user = new IdentityUser { UserName = model.Email, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
-
+            Console.WriteLine(user);
             if (result.Succeeded)
             {
                 return Ok("User registered successfully");
@@ -85,7 +86,7 @@ namespace SynonymReplacer.Controllers
             return BadRequest(result.Errors);
         }
 
-        [HttpPost("api/auth/login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
             var result = await _signInManager.PasswordSignInAsync(
