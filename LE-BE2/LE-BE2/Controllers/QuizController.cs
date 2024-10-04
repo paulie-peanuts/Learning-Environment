@@ -1,13 +1,13 @@
 using System.Collections.Generic; // Make sure to include this for List<T>
 using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SynonymReplacer.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using SynonymReplacer.Models;
 
 namespace SynonymReplacer.Controllers
 {
@@ -98,10 +98,14 @@ namespace SynonymReplacer.Controllers
 
             if (result.Succeeded)
             {
-                return Ok("User logged in successfully");
+                // Return a JWT token or some JSON data
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                var token = GenerateJwtToken(user);
+
+                return Ok(new { Message = "User logged in successfully", Token = token });
             }
 
-            return Unauthorized("Invalid login attempt");
+            return Unauthorized(new { Message = "Invalid login attempt" });
         }
 
         private string GenerateJwtToken(IdentityUser user)
@@ -112,7 +116,9 @@ namespace SynonymReplacer.Controllers
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Your_Secret_Key")); // Keep this secure!
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes("YourNewSecureKeyThatIsAtLeast16CharsLong")
+            );
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(

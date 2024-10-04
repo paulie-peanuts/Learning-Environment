@@ -19,11 +19,11 @@ const Login = () => {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('token', data.token); // Store the token in local storage
-                // Optionally redirect or update UI to reflect logged-in status
             } else {
                 const errorData = await response.json();
-                setError(errorData.message || "Login failed"); // Handle error message
+                setError(errorData.message || "Login failed");
             }
+
         } catch (error) {
             setError("An error occurred. Please try again.");
             console.error('Login error:', error);
