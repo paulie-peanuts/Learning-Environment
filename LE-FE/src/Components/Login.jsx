@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Login = () => {
+const Login = ({ setIsAuthenticated }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -19,6 +19,7 @@ const Login = () => {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('token', data.token); // Store the token in local storage
+                setIsAuthenticated(true); // Trigger re-render by updating state
             } else {
                 const errorData = await response.json();
                 setError(errorData.message || "Login failed");

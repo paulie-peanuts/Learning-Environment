@@ -1,16 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Logout = () => {
+const Logout = ({ handleLogout }) => {
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        localStorage.removeItem('token'); // Remove the token from local storage
-        navigate('/login'); // Redirect the user to the login page (or wherever you want)
+    const onLogoutClick = () => {
+        handleLogout(); // Call the function to remove the token and update state
+        navigate('/login'); // Navigate back to the login page
     };
 
     return (
-        <button onClick={handleLogout}>
+        <button onClick={onLogoutClick}>
             Logout
         </button>
     );

@@ -1,4 +1,64 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import './App.css';
+import ItemList from './Components/ItemList';
+import SynonymReplacer from './Components/SynonymReplacer';
+import QuizApp from './Components/QuizApp';
+import Login from './Components/Login';
+import SignUp from './Components/SignUp';
+import Logout from './Components/Logout';
+import ProtectedDataComponent from './Components/ProtectedDataComponent';
+
+function App() {
+  // State to track if the user is authenticated
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+
+  // Effect to monitor changes to localStorage (for login or logout)
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(!!token);
+  }, []);
+
+  // Function to handle logout and trigger re-render
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsAuthenticated(false); // Update state to trigger re-render
+  };
+
+  return (
+    <Router>
+      <div>
+        <h1>My App</h1>
+        {/* Render the Logout button if authenticated */}
+        {isAuthenticated && <Logout handleLogout={handleLogout} />}
+        <Routes>
+          {!isAuthenticated ? (
+            <>
+              <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+              <Route path="*" element={<Navigate to="/login" />} />
+            </>
+          ) : (
+            <>
+              <Route path="/" element={<ProtectedDataComponent />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </>
+          )}
+        </Routes>
+      </div>
+      <div>
+        <ItemList />
+        <SynonymReplacer />
+        <QuizApp />
+        <SignUp />
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+
+
+/*import { useEffect, useState } from 'react'
 import axios from 'axios'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
@@ -8,6 +68,8 @@ import SynonymReplacer from './Components/SynonymReplacer';
 import QuizApp from './Components/QuizApp'
 import Login from './Components/Login';  // Import your Login component
 import SignUp from './Components/SignUp';
+import Logout from './Components/Logout';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ProtectedDataComponent from './Components/ProtectedDataComponent'; // Import the ProtectedDataComponent
 
 
@@ -26,6 +88,7 @@ function App() {
         )}
       </div>
       <div>
+        <Logout />
         <ItemList />
         <SynonymReplacer />
         <QuizApp />
@@ -56,3 +119,4 @@ function App() {
 }
 
 export default App
+*/
