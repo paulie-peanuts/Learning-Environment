@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './Components/Navbar'; // Import Navbar
 import Login from './Components/Login'; // Import your Login component
-import ProtectedDataComponent from './Components/ProtectedDataComponent'; // Import the ProtectedDataComponent
+import ProtectedDataComponent from './Components/ProtectedDataComponent'; // Import ProtectedDataComponent
+import QuizApp from './Components/QuizApp'; // Import QuizApp Component
+import SynonymReplacer from './Components/SynonymReplacer'; // Import Synonym Replacer Component
+import SignUp from './Components/SignUp'; // Import Sign Up Component
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
@@ -24,6 +27,106 @@ const App = () => {
                 <Navbar isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
 
                 {/* Routes */}
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<h1>Welcome to My App</h1>}
+                    />
+
+                    {/* Show Login when not authenticated */}
+                    <Route
+                        path="/login"
+                        element={
+                            !isAuthenticated ? (
+                                <Login onLoginSuccess={handleLoginSuccess} />
+                            ) : (
+                                <p>You are already logged in!</p>
+                            )
+                        }
+                    />
+
+                    {/* Show Signup when not authenticated */}
+                    <Route
+                        path="/signup"
+                        element={
+                            !isAuthenticated ? (
+                                <SignUp />
+                            ) : (
+                                <p>You are already logged in!</p>
+                            )
+                        }
+                    />
+
+                    {/* Show QuizApp only when authenticated */}
+                    <Route
+                        path="/quiz"
+                        element={
+                            isAuthenticated ? (
+                                <QuizApp />
+                            ) : (
+                                <p>You need to log in to access the Quiz App.</p>
+                            )
+                        }
+                    />
+
+                    {/* Show SynonymReplacer only when authenticated */}
+                    <Route
+                        path="/synonym-replacer"
+                        element={
+                            isAuthenticated ? (
+                                <SynonymReplacer />
+                            ) : (
+                                <p>You need to log in to access the Synonym Replacer.</p>
+                            )
+                        }
+                    />
+
+                    {/* Show protected data only when authenticated */}
+                    <Route
+                        path="/protected"
+                        element={
+                            isAuthenticated ? (
+                                <ProtectedDataComponent />
+                            ) : (
+                                <p>You need to log in to access this data.</p>
+                            )
+                        }
+                    />
+                </Routes>
+            </div>
+        </Router>
+    );
+};
+
+export default App;
+
+
+/*import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './Components/Navbar'; // Import Navbar
+import Login from './Components/Login'; // Import your Login component
+import ProtectedDataComponent from './Components/ProtectedDataComponent'; // Import the ProtectedDataComponent
+
+const App = () => {
+    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsAuthenticated(false);
+    };
+
+    const handleLoginSuccess = (token) => {
+        localStorage.setItem('token', token);
+        setIsAuthenticated(true);
+    };
+
+    return (
+        <Router>
+            <div>
+                
+                <Navbar isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
+
+                
                 <Routes>
                     <Route
                         path="/"
@@ -55,7 +158,7 @@ const App = () => {
     );
 };
 
-export default App;
+export default App;*/
 
 /*import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
