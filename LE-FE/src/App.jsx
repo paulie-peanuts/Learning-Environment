@@ -1,4 +1,63 @@
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './Components/Navbar'; // Import Navbar
+import Login from './Components/Login'; // Import your Login component
+import ProtectedDataComponent from './Components/ProtectedDataComponent'; // Import the ProtectedDataComponent
+
+const App = () => {
+    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsAuthenticated(false);
+    };
+
+    const handleLoginSuccess = (token) => {
+        localStorage.setItem('token', token);
+        setIsAuthenticated(true);
+    };
+
+    return (
+        <Router>
+            <div>
+                {/* Navigation Bar */}
+                <Navbar isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
+
+                {/* Routes */}
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<h1>Welcome to My App</h1>}
+                    />
+                    <Route
+                        path="/login"
+                        element={
+                            !isAuthenticated ? (
+                                <Login onLoginSuccess={handleLoginSuccess} />
+                            ) : (
+                                <p>You are already logged in!</p>
+                            )
+                        }
+                    />
+                    <Route
+                        path="/protected"
+                        element={
+                            isAuthenticated ? (
+                                <ProtectedDataComponent />
+                            ) : (
+                                <p>You need to log in to access this data.</p>
+                            )
+                        }
+                    />
+                </Routes>
+            </div>
+        </Router>
+    );
+};
+
+export default App;
+
+/*import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import './App.css';
 import ItemList from './Components/ItemList';
@@ -29,7 +88,7 @@ function App() {
     <Router>
       <div>
         <h1>My App</h1>
-        {/* Render the Logout button if authenticated */}
+        
         {isAuthenticated && <Logout handleLogout={handleLogout} />}
         <Routes>
           {!isAuthenticated ? (
@@ -55,7 +114,7 @@ function App() {
   );
 }
 
-export default App;
+export default App;*/
 
 
 /*import { useEffect, useState } from 'react'
