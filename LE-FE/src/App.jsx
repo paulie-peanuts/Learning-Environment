@@ -5,7 +5,9 @@ import Login from './Components/Login'; // Import your Login component
 import ProtectedDataComponent from './Components/ProtectedDataComponent'; // Import ProtectedDataComponent
 import QuizApp from './Components/QuizApp'; // Import QuizApp Component
 import SynonymReplacer from './Components/SynonymReplacer'; // Import Synonym Replacer Component
+import BookSummary from './Components/BookSummary';
 import SignUp from './Components/SignUp'; // Import Sign Up Component
+import BookSearch from './Components/BookSearch';
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
@@ -77,6 +79,30 @@ const App = () => {
                                 <SynonymReplacer />
                             ) : (
                                 <p>You need to log in to access the Synonym Replacer.</p>
+                            )
+                        }
+                    />
+
+                    {/* Show BookSummary only when authenticated */}
+                    <Route
+                        path="/book-summary"
+                        element={
+                            isAuthenticated ? (
+                                <BookSummary />
+                            ) : (
+                                <p>You need to log in to access the Book Summary.</p>
+                            )
+                        }
+                    />
+
+                    {/* Show BookSearch only when authenticated */}
+                    <Route
+                        path="/book-search"
+                        element={
+                            isAuthenticated ? (
+                                <BookSearch />
+                            ) : (
+                                <p>You need to log in to access the Book Search.</p>
                             )
                         }
                     />

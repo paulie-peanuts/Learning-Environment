@@ -24,6 +24,12 @@ const Navbar = ({ isAuthenticated, handleLogout }) => {
                             <Link to="/quiz" style={styles.link}>Quiz App</Link>
                         </li>
                         <li style={styles.navItem}>
+                            <Link to="/book-summary" style={styles.link}>Book Summary</Link>
+                        </li>
+                        <li style={styles.navItem}>
+                            <Link to="/book-search" style={styles.link}>Book Search</Link>
+                        </li>
+                        <li style={styles.navItem}>
                             <Link to="/synonym-replacer" style={styles.link}>Synonym Replacer</Link>
                         </li>
                         <li style={styles.navItem}>
