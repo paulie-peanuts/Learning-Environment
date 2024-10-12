@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore; // Add this line
 using SynonymReplacer.Models;
 
 namespace SynonymReplacer.Controllers
@@ -54,6 +55,31 @@ namespace SynonymReplacer.Controllers
             await _context.SaveChangesAsync(); // Save the data to the database
 
             return Ok(new { Message = "Quiz saved successfully." });
+        }
+
+        [HttpGet("questions")]
+        public async Task<ActionResult<IEnumerable<QuizQuestion>>> GetAllQuestions()
+        {
+            // Retrieve all quiz questions from the database
+            var questions = await _context.QuizQuestions.ToListAsync();
+
+            // Return the questions as a response
+            return Ok(questions);
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteQuizQuestion(int id)
+        {
+            var question = await _context.QuizQuestions.FindAsync(id);
+            if (question == null)
+            {
+                return NotFound(new { message = "Question not found" });
+            }
+
+            _context.QuizQuestions.Remove(question);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Question deleted successfully" });
         }
 
         /*

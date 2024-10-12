@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import QuizList from './QuizList';
 
 const QuizApp = () => {
     const [sentence, setSentence] = useState('');
@@ -117,6 +118,7 @@ const QuizApp = () => {
                         ))}
                         <button type="submit">Submit Answer</button>
                     </form>
+                    <QuizList />
                 </div>
             )}
 
