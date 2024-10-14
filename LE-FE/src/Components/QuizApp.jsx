@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import QuizList from './QuizList';
+import './QuizApp.css'; // Import the CSS file
 
 const QuizApp = () => {
     const [sentence, setSentence] = useState('');
@@ -87,7 +88,7 @@ const QuizApp = () => {
     };
     
     return (
-        <div>
+        <div className="quiz-container">
             <h1>Synonym Quiz</h1>
             {!quizData ? (
                 <form onSubmit={handleSentenceSubmit}>
