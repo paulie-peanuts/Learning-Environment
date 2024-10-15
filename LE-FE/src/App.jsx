@@ -8,6 +8,8 @@ import SynonymReplacer from './Components/SynonymReplacer'; // Import Synonym Re
 import BookSummary from './Components/BookSummary';
 import SignUp from './Components/SignUp'; // Import Sign Up Component
 import BookSearch from './Components/BookSearch';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
