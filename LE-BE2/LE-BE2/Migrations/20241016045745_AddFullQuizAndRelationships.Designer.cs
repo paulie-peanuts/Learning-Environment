@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SynonymReplacer.Models;
 
@@ -11,9 +12,11 @@ using SynonymReplacer.Models;
 namespace LE_BE2.Migrations
 {
     [DbContext(typeof(QuizDbContext))]
-    partial class QuizDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241016045745_AddFullQuizAndRelationships")]
+    partial class AddFullQuizAndRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -254,7 +257,7 @@ namespace LE_BE2.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("FullQuizId")
+                    b.Property<int>("FullQuizId")
                         .HasColumnType("int");
 
                     b.Property<string>("NewSentence")
@@ -332,7 +335,8 @@ namespace LE_BE2.Migrations
                     b.HasOne("SynonymReplacer.Models.FullQuiz", "FullQuiz")
                         .WithMany("QuizQuestions")
                         .HasForeignKey("FullQuizId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("FullQuiz");
                 });

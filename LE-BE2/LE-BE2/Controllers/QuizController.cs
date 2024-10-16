@@ -134,6 +134,36 @@ namespace SynonymReplacer.Controllers
             return Unauthorized(new { Message = "Invalid login attempt" });
         }
 
+[HttpPost]
+public async Task<IActionResult> CreateFullQuiz(FullQuizData quizData)
+{
+    // Create FullQuiz first
+    var fullQuiz = new FullQuiz
+    {
+        Title = quizData.Title,
+        Description = quizData.Description
+    };
+    _context.FullQuizzes.Add(fullQuiz);
+    await _context.SaveChangesAsync();
+
+    // Now create quiz questions
+    foreach (var question in quizData.Questions)
+    {
+        var quizQuestion = new QuizQuestion
+        {
+            OriginalSentence = question.OriginalSentence,
+            NewSentence = question.NewSentence,
+            CorrectWord = question.CorrectWord,
+            Options = question.Options,
+            FullQuizId = fullQuiz.Id // Associate with FullQuiz
+        };
+        _context.QuizQuestions.Add(quizQuestion);
+    }
+    await _context.SaveChangesAsync();
+
+    return Ok(new { Message = "Quiz created successfully!" });
+}
+
         private string GenerateJwtToken(IdentityUser user)
         {
             var claims = new[]
@@ -199,6 +229,7 @@ namespace SynonymReplacer.Controllers
             [DataType(DataType.Password)]
             public string Password { get; set; }
         }
+
     }
 }
 
