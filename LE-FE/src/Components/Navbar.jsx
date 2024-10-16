@@ -1,5 +1,68 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import './Navbar.css'; // Import the CSS file
+
+const Navbar = ({ isAuthenticated, handleLogout }) => {
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  const handleSignUpClick = () => {
+    navigate('/signup');
+  };
+
+  return (
+    <nav>
+      <ul className="navbar-menu">
+        <li className="nav-item">
+          <Link to="/" className="nav-link">Home</Link>
+        </li>
+        {isAuthenticated ? (
+          <>
+            <li className="nav-item">
+              <Link to="/quiz" className="nav-link">Quiz App</Link>
+            </li>
+            <li className="nav-item dropdown">
+              <span className="nav-link">Books</span>
+              <ul className="dropdown-menu">
+                <li className="dropdown-item">
+                  <Link to="/book-summary" className="nav-link">Book Summary</Link>
+                </li>
+                <li className="dropdown-item">
+                  <Link to="/book-search" className="nav-link">Book Search</Link>
+                </li>
+              </ul>
+            </li>
+            <li className="nav-item">
+              <Link to="/synonym-replacer" className="nav-link">Synonym Replacer</Link>
+            </li>
+            <li className="nav-item">
+              <button onClick={handleLogout} className="nav-button">Logout</button>
+            </li>
+          </>
+        ) : (
+          <>
+            <li className="nav-item">
+              <button onClick={handleLoginClick} className="nav-button">Login</button>
+            </li>
+            <li className="nav-item">
+              <button onClick={handleSignUpClick} className="nav-button">Sign Up</button>
+            </li>
+          </>
+        )}
+      </ul>
+    </nav>
+  );
+};
+
+export default Navbar;
+
+
+
+/*import React from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Navbar = ({ isAuthenticated, handleLogout }) => {
     const navigate = useNavigate();
@@ -77,7 +140,7 @@ const styles = {
     },
 };
 
-export default Navbar;
+export default Navbar;*/
 
 
 /*import React from 'react';
