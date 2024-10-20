@@ -134,7 +134,7 @@ namespace SynonymReplacer.Controllers
             return Unauthorized(new { Message = "Invalid login attempt" });
         }
 
-[HttpPost]
+/*[HttpPost]
 public async Task<IActionResult> CreateFullQuiz(FullQuizData quizData)
 {
     // Create FullQuiz first
@@ -162,7 +162,35 @@ public async Task<IActionResult> CreateFullQuiz(FullQuizData quizData)
     await _context.SaveChangesAsync();
 
     return Ok(new { Message = "Quiz created successfully!" });
-}
+}*/
+[HttpPost("create-full-quiz")]
+    public async Task<IActionResult> CreateFullQuiz([FromBody] FullQuizData fullQuizData)
+    {
+        if (fullQuizData == null || fullQuizData.Questions == null || !fullQuizData.Questions.Any())
+        {
+            return BadRequest("Quiz data is invalid.");
+        }
+
+        // Map FullQuizData to FullQuiz
+        var fullQuiz = new FullQuiz
+        {
+            Title = fullQuizData.Title,
+            Description = fullQuizData.Description,
+            CreatedAt = DateTime.Now,
+            QuizQuestions = fullQuizData.Questions.Select(q => new QuizQuestion
+            {
+                OriginalSentence = q.OriginalSentence,
+                NewSentence = q.NewSentence,
+                CorrectWord = q.CorrectWord,
+                Options = q.Options // Ensure Options is in the correct format
+            }).ToList()
+        };
+
+        _context.FullQuizzes.Add(fullQuiz);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { Message = "Full quiz created successfully.", QuizId = fullQuiz.Id });
+    }
 
         private string GenerateJwtToken(IdentityUser user)
         {

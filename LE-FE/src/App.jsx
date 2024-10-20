@@ -9,6 +9,7 @@ import BookSummary from './Components/BookSummary';
 import SignUp from './Components/SignUp'; // Import Sign Up Component
 import BookSearch from './Components/BookSearch';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import QuizCreator from './Components/QuizCreator';
 
 
 const App = () => {
@@ -81,6 +82,18 @@ const App = () => {
                                 <SynonymReplacer />
                             ) : (
                                 <p>You need to log in to access the Synonym Replacer.</p>
+                            )
+                        }
+                    />
+
+                    {/* Show SynonymReplacer only when authenticated */}
+                    <Route
+                        path="/quiz-creator"
+                        element={
+                            isAuthenticated ? (
+                                <QuizCreator />
+                            ) : (
+                                <p>You need to log in to access the Quiz Creator.</p>
                             )
                         }
                     />
