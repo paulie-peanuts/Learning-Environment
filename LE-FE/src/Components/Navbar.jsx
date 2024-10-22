@@ -42,6 +42,9 @@ const Navbar = ({ isAuthenticated, handleLogout }) => {
               <Link to="/quiz-creator" className="nav-link">Quiz Creator</Link>
             </li>
             <li className="nav-item">
+              <Link to="/quiz-list" className="nav-link">Take Quiz</Link>
+            </li>
+            <li className="nav-item">
               <button onClick={handleLogout} className="nav-button">Logout</button>
             </li>
           </>

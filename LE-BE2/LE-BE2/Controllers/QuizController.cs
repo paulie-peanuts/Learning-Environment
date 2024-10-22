@@ -191,6 +191,98 @@ public async Task<IActionResult> CreateFullQuiz(FullQuizData quizData)
 
         return Ok(new { Message = "Full quiz created successfully.", QuizId = fullQuiz.Id });
     }
+        // GET: api/quiz/all-quizzes
+    /*[HttpGet("all-quizzes")]
+    public async Task<ActionResult<IEnumerable<FullQuiz>>> GetAllQuizzes()
+    {
+        var quizzes = await _context.FullQuizzes
+            .Include(q => q.QuizQuestions)
+            .ToListAsync();
+
+        return Ok(quizzes);
+    }
+    */
+[HttpGet("all-quizzes")]
+public async Task<ActionResult<IEnumerable<FullQuizDto>>> GetAllQuizzes()
+{
+    var quizzes = await _context.FullQuizzes
+        .Include(q => q.QuizQuestions)
+        .ToListAsync();
+
+    var quizDtos = quizzes.Select(quiz => new FullQuizDto
+    {
+        Id = quiz.Id,
+        Title = quiz.Title,
+        Description = quiz.Description,
+        CreatedAt = quiz.CreatedAt,
+        QuizQuestions = quiz.QuizQuestions.Select(q => new QuizQuestionDto
+        {
+            Id = q.Id,
+            OriginalSentence = q.OriginalSentence,
+            NewSentence = q.NewSentence,
+            CorrectWord = q.CorrectWord,
+            Options = q.Options
+        }).ToList()
+    }).ToList();
+
+    return Ok(quizDtos);
+} 
+    // POST: api/quiz/submit-answers
+[HttpPost("submit-answers")]
+public async Task<IActionResult> SubmitAnswers([FromBody] QuizAnswerData quizAnswerData)
+{
+    if (quizAnswerData == null || quizAnswerData.Answers == null || !quizAnswerData.Answers.Any())
+    {
+        return BadRequest("Answer data is invalid.");
+    }
+
+    var quiz = await _context.FullQuizzes
+        .Include(q => q.QuizQuestions)
+        .FirstOrDefaultAsync(q => q.Id == quizAnswerData.QuizId);
+
+    if (quiz == null)
+    {
+        return NotFound("Quiz not found.");
+    }
+
+    int correctAnswers = 0;
+
+    foreach (var answer in quizAnswerData.Answers)
+    {
+        var question = quiz.QuizQuestions.FirstOrDefault(q => q.Id == answer.QuestionId);
+        if (question != null)
+        {
+            var correctOption = question.CorrectWord;
+            if (answer.SelectedOption == correctOption)
+            {
+                correctAnswers++;
+            }
+        }
+    }
+
+    int totalQuestions = quiz.QuizQuestions.Count;
+    double scorePercentage = ((double)correctAnswers / totalQuestions) * 100;
+
+    // Optionally, save the result to the database (if you implement user accounts)
+
+    return Ok(new { CorrectAnswers = correctAnswers, TotalQuestions = totalQuestions, Score = scorePercentage });
+}
+// GET: api/quiz/{id}
+[HttpGet("{id}")]
+public async Task<ActionResult<FullQuiz>> GetQuizById(int id)
+{
+    var quiz = await _context.FullQuizzes
+        .Include(q => q.QuizQuestions)
+        .FirstOrDefaultAsync(q => q.Id == id);
+
+    if (quiz == null)
+    {
+        return NotFound("Quiz not found.");
+    }
+
+    return Ok(quiz);
+}
+
 
         private string GenerateJwtToken(IdentityUser user)
         {

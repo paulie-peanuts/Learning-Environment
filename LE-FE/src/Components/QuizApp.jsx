@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import QuizList from './QuizList';
+import QuizQuestionList from './QuizQuestionList';
 import DeleteQuizModal from './DeleteQuizModal'; // Import the modal
 import './QuizApp.css'; // Import the CSS file
 
@@ -138,7 +138,7 @@ const QuizApp = () => {
                         ))}
                         <button type="submit">Submit Answer</button>
                     </form>
-                    <QuizList onDelete={handleOpenDeleteModal} /> {/* Pass onDelete prop */}
+                    <QuizQuestionList onDelete={handleOpenDeleteModal} /> {/* Pass onDelete prop */}
                 </div>
             )}
 

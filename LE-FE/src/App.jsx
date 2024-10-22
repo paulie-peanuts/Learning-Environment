@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Navbar from './Components/Navbar'; // Import Navbar
 import Login from './Components/Login'; // Import your Login component
 import ProtectedDataComponent from './Components/ProtectedDataComponent'; // Import ProtectedDataComponent
@@ -10,6 +10,9 @@ import SignUp from './Components/SignUp'; // Import Sign Up Component
 import BookSearch from './Components/BookSearch';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import QuizCreator from './Components/QuizCreator';
+import QuizList from './Components/QuizList';
+import QuizTaker from './Components/QuizTaker';
+import QuizResult from './Components/QuizResult';
 
 
 const App = () => {
@@ -86,7 +89,7 @@ const App = () => {
                         }
                     />
 
-                    {/* Show SynonymReplacer only when authenticated */}
+                    {/* Show QuizCreator only when authenticated */}
                     <Route
                         path="/quiz-creator"
                         element={
@@ -94,6 +97,42 @@ const App = () => {
                                 <QuizCreator />
                             ) : (
                                 <p>You need to log in to access the Quiz Creator.</p>
+                            )
+                        }
+                    />
+
+                    {/* Show Quizzes only when authenticated */}
+                    <Route
+                        path="/quiz-list"
+                        element={
+                            isAuthenticated ? (
+                                <QuizList />
+                            ) : (
+                                <p>You need to log in to access Quizzes.</p>
+                            )
+                        }
+                    />
+
+                    {/* Show QuizTaker only when authenticated */}
+                    <Route
+                        path="/take-quiz/:quizId"
+                        element={
+                            isAuthenticated ? (
+                                <QuizTaker />
+                            ) : (
+                                <p>You need to log in to access the Quiz Taker.</p>
+                            )
+                        }
+                    />
+
+                    {/* Show QuizResult only when authenticated */}
+                    <Route
+                        path="/quiz-result"
+                        element={
+                            isAuthenticated ? (
+                                <QuizResult />
+                            ) : (
+                                <p>You need to log in to access the Quiz Result.</p>
                             )
                         }
                     />
