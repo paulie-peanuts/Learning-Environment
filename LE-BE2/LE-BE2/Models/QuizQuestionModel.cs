@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+
 
 namespace SynonymReplacer.Models
 {
@@ -14,6 +16,7 @@ namespace SynonymReplacer.Models
 
         // Foreign key to FullQuiz
         public int? FullQuizId { get; set; }
+        [JsonIgnore] // Prevent cyclic reference
         public FullQuiz FullQuiz { get; set; } // Navigation property to FullQuiz
     }
 
