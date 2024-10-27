@@ -1,12 +1,14 @@
 // src/components/QuizTaker.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import './QuizTaker.css';
 
 const QuizTaker = () => {
   const { quizId } = useParams();
   const navigate = useNavigate();
   const [quiz, setQuiz] = useState(null);
   const [userAnswers, setUserAnswers] = useState({});
+  const [questionsAnswered, setQuestionsAnswered] = useState(0);
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -23,13 +25,22 @@ const QuizTaker = () => {
   }, [quizId]);
 
   const handleOptionChange = (questionId, selectedOption) => {
-    setUserAnswers({
-      ...userAnswers,
-      [questionId]: selectedOption,
+    setUserAnswers((prevAnswers) => {
+      const alreadyAnswered = prevAnswers.hasOwnProperty(questionId);
+      const updatedAnswers = {
+        ...prevAnswers,
+        [questionId]: selectedOption,
+      };
+      if (!alreadyAnswered) {
+        setQuestionsAnswered((prevCount) => prevCount + 1);
+      }
+      return updatedAnswers;
     });
   };
 
   const handleSubmitQuiz = async () => {
+    console.log('handleSubmitQuiz called');
+
     const answers = Object.keys(userAnswers).map((questionId) => ({
       QuestionId: parseInt(questionId),
       SelectedOption: userAnswers[questionId],
@@ -50,7 +61,6 @@ const QuizTaker = () => {
       const result = await response.json();
 
       if (response.ok) {
-        // Use state to pass result data to QuizResult component
         navigate('/quiz-result', { state: { result } });
       } else {
         alert(`Error: ${result.Message || 'Could not submit quiz.'}`);
@@ -65,39 +75,50 @@ const QuizTaker = () => {
     return <p>Loading quiz...</p>;
   }
 
+  const totalQuestions = quiz.quizQuestions.length;
+  const progress = (questionsAnswered / totalQuestions) * 100;
+
   return (
     <div className="quiz-taker">
       <h2>{quiz.title}</h2>
       <p>{quiz.description}</p>
-      <form onSubmit={(e) => e.preventDefault()}>
-        {quiz.quizQuestions.map((question) => {
-          const options = question.options.split(',');
 
-          return (
-            <div key={question.id} className="quiz-question">
-              <p><strong>{question.newSentence}</strong></p>
-              {options.map((option, index) => (
-                <label key={index}>
-                  <input
-                    type="radio"
-                    name={`question-${question.id}`}
-                    value={option}
-                    checked={userAnswers[question.id] === option}
-                    onChange={() => handleOptionChange(question.id, option)}
-                  />
-                  {option}
-                </label>
-              ))}
-            </div>
-          );
-        })}
-        <button type="button" onClick={handleSubmitQuiz}>Submit Quiz</button>
-      </form>
+      {/* Progress Bar */}
+      <div className="progress-bar-container">
+        <progress value={questionsAnswered} max={totalQuestions}></progress>
+        <p>{Math.round(progress)}% completed</p>
+      </div>
+
+      {/* Removed form element */}
+      {quiz.quizQuestions.map((question) => {
+        const options = question.options.split(',');
+
+        return (
+          <div key={question.id} className="quiz-question">
+            <p><strong>{question.newSentence}</strong></p>
+            {options.map((option, index) => (
+              <label key={index}>
+                <input
+                  type="radio"
+                  name={`question-${question.id}`}
+                  value={option}
+                  checked={userAnswers[question.id] === option}
+                  onChange={() => handleOptionChange(question.id, option)}
+                />
+                {option}
+              </label>
+            ))}
+          </div>
+        );
+      })}
+      <button type="button" onClick={handleSubmitQuiz}>Submit Quiz</button>
     </div>
   );
 };
 
 export default QuizTaker;
+
+
 
 /*import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
