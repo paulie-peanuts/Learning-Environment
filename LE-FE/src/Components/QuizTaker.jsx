@@ -1,14 +1,12 @@
 // src/components/QuizTaker.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import './QuizTaker.css';
 
 const QuizTaker = () => {
   const { quizId } = useParams();
   const navigate = useNavigate();
   const [quiz, setQuiz] = useState(null);
-  const [userAnswers, setUserAnswers] = useState({});
-  const [questionsAnswered, setQuestionsAnswered] = useState(0);
+  const [userAnswers, setUserAnswers] = useState({}); // Removed questionsAnswered
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -25,17 +23,10 @@ const QuizTaker = () => {
   }, [quizId]);
 
   const handleOptionChange = (questionId, selectedOption) => {
-    setUserAnswers((prevAnswers) => {
-      const alreadyAnswered = prevAnswers.hasOwnProperty(questionId);
-      const updatedAnswers = {
-        ...prevAnswers,
-        [questionId]: selectedOption,
-      };
-      if (!alreadyAnswered) {
-        setQuestionsAnswered((prevCount) => prevCount + 1);
-      }
-      return updatedAnswers;
-    });
+    setUserAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [questionId]: selectedOption,
+    }));
   };
 
   const handleSubmitQuiz = async () => {
@@ -76,6 +67,7 @@ const QuizTaker = () => {
   }
 
   const totalQuestions = quiz.quizQuestions.length;
+  const questionsAnswered = Object.keys(userAnswers).length; // Compute dynamically
   const progress = (questionsAnswered / totalQuestions) * 100;
 
   return (
@@ -89,7 +81,6 @@ const QuizTaker = () => {
         <p>{Math.round(progress)}% completed</p>
       </div>
 
-      {/* Removed form element */}
       {quiz.quizQuestions.map((question) => {
         const options = question.options.split(',');
 
@@ -117,6 +108,7 @@ const QuizTaker = () => {
 };
 
 export default QuizTaker;
+
 
 
 
