@@ -1,5 +1,69 @@
+import React from 'react';
 
-const RankingGrid = ({items, imgArr, drag, allowDrop, drop }) => {
+const RankingGrid = ({ items, imgArr, drag, allowDrop, drop }) => {
+  const tiers = [
+    { label: 'Top Tier', className: 'top-tier' },
+    { label: 'Middle Tier', className: 'middle-tier' },
+    { label: 'Bottom Tier', className: 'bottom-tier' },
+    { label: 'Worst Tier', className: 'worst-tier' },
+  ];
+
+  const numCells = 5;
+
+  const renderGrid = () =>
+    tiers.map((tier, rowIndex) => {
+      const cells = [];
+
+      for (let cellIndex = 0; cellIndex < numCells; cellIndex++) {
+        if (cellIndex === 0) {
+          // Row label
+          cells.push(
+            <div key={`label-${rowIndex}`} className="row-label">
+              <h4>{tier.label}</h4>
+            </div>
+          );
+        } else {
+          const rankNum = numCells * rowIndex + cellIndex - rowIndex;
+          const item = items.find((o) => o.ranking === rankNum);
+          const image = item
+            ? imgArr.find((img) => img.id === item.imageId)?.image
+            : null;
+
+          cells.push(
+            <div
+              key={`rank-${rankNum}`}
+              id={`rank-${rankNum}`}
+              onDrop={drop}
+              onDragOver={allowDrop}
+              className="rank-cell"
+            >
+              {image && (
+                <img
+                  id={`item-${item.id}`}
+                  src={image}
+                  draggable="true"
+                  onDragStart={drag}
+                  alt=""
+                />
+              )}
+            </div>
+          );
+        }
+      }
+
+      return (
+        <div key={`row-${rowIndex}`} className={`rank-row ${tier.className}`}>
+          {cells}
+        </div>
+      );
+    });
+
+  return <div className="rankings">{renderGrid()}</div>;
+};
+
+export default RankingGrid;
+
+/*const RankingGrid = ({items, imgArr, drag, allowDrop, drop }) => {
 
     const rankingGrid = [];
     const cellCollectionTop = [];
@@ -83,4 +147,4 @@ const RankingGrid = ({items, imgArr, drag, allowDrop, drop }) => {
     )
 
 }
-export default RankingGrid;
+export default RankingGrid;*/
